@@ -1,0 +1,8 @@
+name: ColoredEnderChests
+version: ${project.version}
+author: TheBusyBiscuit
+website: http://TheBusyBiscuit.github.io/
+depend: [Slimefun, CS-CoreLib]
+
+main: io.github.thebusybiscuit.coloredenderchests.ColoredEnderChests
+api-version: 1.13
