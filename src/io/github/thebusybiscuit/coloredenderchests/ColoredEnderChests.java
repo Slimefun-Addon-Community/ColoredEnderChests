@@ -3,6 +3,7 @@ package io.github.thebusybiscuit.coloredenderchests;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -121,21 +122,26 @@ public class ColoredEnderChests extends JavaPlugin {
 	
 	protected void updateIndicator(Block b, int c1, int c2, int c3, int yaw) {
 		removeIndicator(b);
-
-		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D), new ItemStack(wool[c1]), new EulerAngle(angle, 0F, 0F), (float) yaw);
-		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D), new ItemStack(wool[c3]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		EulerAngle euler = new EulerAngle(angle, 0F, 0F);
 		
-		if (yaw == 45) {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D + 0.275, 0.5D + offset, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		Location l = b.getLocation().add(0.5D, 0.5D + offset, 0.5D);
+		ArmorStandFactory.createSmall(l, new ItemStack(wool[c1]), euler, (float) yaw);
+		ArmorStandFactory.createSmall(getLocation(l, 1, yaw), new ItemStack(wool[c2]), euler, (float) yaw);
+		ArmorStandFactory.createSmall(getLocation(l, 1, yaw), new ItemStack(wool[c3]), euler, (float) yaw);
+	}
+	
+	private Location getLocation(Location l, int direction, int yaw) {
+		if (yaw == 45) { // 0
+			return l.add(0.275 * direction, 0, 0);
 		}
-		else if (yaw == 225) {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D - 0.275, 0.5D + offset, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		else if (yaw == 225) { // 180
+			return l.add(-0.275 * direction, 0, 0);
 		}
-		else if (yaw == -45){
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D - 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		else if (yaw == -45) { // -90
+			return l.add(0, 0, -0.275 * direction);
 		}
-		else {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D + 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		else { // 90
+			return l.add(0, 0, 0.275 * direction);
 		}
 	}
 
