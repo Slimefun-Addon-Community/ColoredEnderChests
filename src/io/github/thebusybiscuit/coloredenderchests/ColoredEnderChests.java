@@ -45,6 +45,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	};
 	
 	protected double angle = Math.toRadians(345);
+	protected double offset = -0.08;
 	
 	@Override
 	public void onEnable() {
@@ -121,20 +122,20 @@ public class ColoredEnderChests extends JavaPlugin {
 	protected void updateIndicator(Block b, int c1, int c2, int c3, int yaw) {
 		removeIndicator(b);
 
-		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D -0.23D, 0.5D), new ItemStack(wool[c1]), new EulerAngle(angle, 0F, 0F), (float) yaw);
-		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D -0.23D, 0.5D), new ItemStack(wool[c3]), new EulerAngle(angle, 0F, 0F), (float) yaw + 180);
+		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D), new ItemStack(wool[c1]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+		ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D), new ItemStack(wool[c3]), new EulerAngle(angle, 0F, 0F), (float) yaw);
 		
 		if (yaw == 45) {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D + 0.275, 0.5D -0.23D, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+			ArmorStandFactory.createSmall(b.getLocation().add(0.5D + 0.275, 0.5D + offset, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
 		}
 		else if (yaw == 225) {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D - 0.275, 0.5D -0.23D, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+			ArmorStandFactory.createSmall(b.getLocation().add(0.5D - 0.275, 0.5D + offset, 0.5D), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
 		}
 		else if (yaw == -45){
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D -0.23D, 0.5D - 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D - 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
 		}
 		else {
-			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D -0.23D, 0.5D + 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
+			ArmorStandFactory.createSmall(b.getLocation().add(0.5D, 0.5D + offset, 0.5D + 0.275), new ItemStack(wool[c2]), new EulerAngle(angle, 0F, 0F), (float) yaw);
 		}
 	}
 
