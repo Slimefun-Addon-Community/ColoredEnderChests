@@ -148,7 +148,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	protected void removeIndicator(Block b) {
 		for (Entity n: b.getChunk().getEntities()) {
 			if (n instanceof ArmorStand) {
-				if (n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.5D) {
+				if (n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D) {
 					n.remove();
 				}
 			}
