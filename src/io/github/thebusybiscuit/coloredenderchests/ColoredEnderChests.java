@@ -3,6 +3,7 @@ package io.github.thebusybiscuit.coloredenderchests;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,6 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
+import io.github.thebusybiscuit.cscorelib2.updater.BukkitUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.GitHubBuildsUpdater;
+import io.github.thebusybiscuit.cscorelib2.updater.Updater;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -26,6 +30,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	protected Config cfg;
 	protected Map<Integer, String> colors = new HashMap<>();
 	protected Category category;
+	
 	protected Material[] wool = {
 		Material.WHITE_WOOL,
 		Material.ORANGE_WOOL,
@@ -54,8 +59,20 @@ public class ColoredEnderChests extends JavaPlugin {
 		utils.setupConfig();
 		cfg = utils.getConfig();
 		
-		utils.setupMetrics();
-		utils.setupUpdater(99696, getFile());
+		// Setting up bStats
+		new Metrics(this);
+
+		// Setting up the Auto-Updater
+		Updater updater;
+
+		if (!getDescription().getVersion().startsWith("DEV - ")) {
+			// We are using an official build, use the BukkitDev Updater
+			updater = new BukkitUpdater(this, getFile(), 99696);
+		}
+		else {
+			// If we are using a development build, we want to switch to our custom 
+			updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
+		}
 		
 		Research r = new Research(2610, "Colored Ender Chests", 20);
 		Research r2 = new Research(2611, "Big Colored Ender Chests", 30);
@@ -148,7 +165,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	protected void removeIndicator(Block b) {
 		for (Entity n: b.getChunk().getEntities()) {
 			if (n instanceof ArmorStand) {
-				if (n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.5D) {
+				if (n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.55D) {
 					n.remove();
 				}
 			}
