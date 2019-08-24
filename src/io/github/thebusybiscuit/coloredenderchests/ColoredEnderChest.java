@@ -63,6 +63,7 @@ public class ColoredEnderChest extends SlimefunItem {
 						break;
 					case EAST:
 						yaw = -90;
+						break;
 					default:
 						break;
 				}
@@ -82,27 +83,19 @@ public class ColoredEnderChest extends SlimefunItem {
 			
 			@Override
 			public void newInstance(BlockMenu menu, Block b) {
+				// We don't need this method for our Ender Chest
 			}
 					
 			@Override
 			public void init() {
 				setSize(size);
 						
-				addMenuOpeningHandler(new MenuOpeningHandler() {
-					
-					@Override
-					public void onOpen(Player p) {
-						p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.8F, 1.6F);
-					}
-					
+				addMenuOpeningHandler((p) -> {
+					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.8F, 1.6F);
 				});
 						
-				addMenuCloseHandler(new MenuCloseHandler() {
-							
-					@Override
-					public void onClose(Player p) {
-						p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, 1.8F, 1.6F);
-					}
+				addMenuCloseHandler((p) -> {
+					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, 1.8F, 1.6F);
 				});
 			}
 					

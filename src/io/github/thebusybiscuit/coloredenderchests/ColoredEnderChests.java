@@ -19,7 +19,6 @@ import io.github.thebusybiscuit.cscorelib2.updater.Updater;
 import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.MenuItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.ArmorStandFactory;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -29,7 +28,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	
 	protected Config cfg;
 	protected Map<Integer, String> colors = new HashMap<>();
-	protected Category category;
+	protected Category category, category2;
 	
 	protected Material[] wool = {
 		Material.WHITE_WOOL,
@@ -73,6 +72,8 @@ public class ColoredEnderChests extends JavaPlugin {
 			// If we are using a development build, we want to switch to our custom 
 			updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
 		}
+
+		if (cfg.getBoolean("options.auto-update")) updater.start();
 		
 		Research r = new Research(2610, "Colored Ender Chests", 20);
 		Research r2 = new Research(2611, "Big Colored Ender Chests", 30);
@@ -101,8 +102,8 @@ public class ColoredEnderChests extends JavaPlugin {
 		colors.put(14, "&4Red");
 		colors.put(15, "&8Black");
 		
-		category = new Category(new MenuItem(Material.ENDER_CHEST, "&5Colored Ender Chests", 0, "open"), 2);
-		Category category2 = null;
+		category = new Category(new CustomItem(Material.ENDER_CHEST, "&5Colored Ender Chests", "", "&a> Click to open"), 2);
+		
 		try {
 			category2 = new Category(new CustomItem(CustomSkull.getItem("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmEzYjM0ODYyYjlhZmI2M2NmOGQ1Nzc5OTY2ZDNmYmE3MGFmODJiMDRlODNmM2VhZjY0NDlhZWJhIn19fQ=="), "&5Colored Ender Backpacks", "", "&a> Click to open"), 2);
 		} catch (Exception e) {
@@ -112,28 +113,24 @@ public class ColoredEnderChests extends JavaPlugin {
 		for (int c1 = 0; c1 < 16; c1++) {
 			for (int c2 = 0; c2 < 16; c2++) {
 				for (int c3 = 0; c3 < 16; c3++) {
-					try {
-						registerEnderChest(category, category2, r, r2, r3, r4, c1, c2, c3);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					registerEnderChest(r, r2, c1, c2, c3);
 				}
 			}
 		}
 		
 	}
 	
-	private void registerEnderChest(Category category, Category category2, Research r, Research r2, Research r3, Research r4, final int c1, final int c2, final int c3) throws Exception {
+	private void registerEnderChest(Research research_small, Research research_big, final int c1, final int c2, final int c3) {
 		if (cfg.getBoolean("small_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 27, c1, c2, c3);
 			item.register();
-			r.addItems(item);
+			research_small.addItems(item);
 		}
 		
 		if (cfg.getBoolean("big_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 54, c1, c2, c3);
 			item.register();
-			r2.addItems(item);
+			research_big.addItems(item);
 		}
 	}
 	
@@ -164,10 +161,8 @@ public class ColoredEnderChests extends JavaPlugin {
 
 	protected void removeIndicator(Block b) {
 		for (Entity n: b.getChunk().getEntities()) {
-			if (n instanceof ArmorStand) {
-				if (n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D) {
-					n.remove();
-				}
+			if (n instanceof ArmorStand && n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D) {
+				n.remove();
 			}
 		}
 	}
