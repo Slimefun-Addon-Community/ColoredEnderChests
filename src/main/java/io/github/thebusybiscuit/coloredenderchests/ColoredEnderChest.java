@@ -9,14 +9,13 @@ import org.bukkit.block.data.type.EnderChest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 
@@ -24,8 +23,7 @@ public class ColoredEnderChest extends SlimefunItem {
 
 	public ColoredEnderChest(ColoredEnderChests plugin, int size, int c1, int c2, int c3) {
 		super(plugin.category, 
-			new CustomItem(Material.ENDER_CHEST, "&eColored Ender Chest &7(" + (size == 27 ? "Small": "Big") + ")", "", "&7Size: &e" + size, "", "&7- " + plugin.colors.get(c1), "&7- " + plugin.colors.get(c2), "&7- " + plugin.colors.get(c3)), 
-			"COLORED_ENDER_CHEST_" + (size == 27 ? "SMALL": "BIG") + "_" + c1 + "_" + c2 + "_" + c3, 
+			new SlimefunItemStack("COLORED_ENDER_CHEST_" + (size == 27 ? "SMALL": "BIG") + "_" + c1 + "_" + c2 + "_" + c3, Material.ENDER_CHEST, "&eColored Ender Chest &7(" + (size == 27 ? "Small": "Big") + ")", "", "&7Size: &e" + size, "", "&7- " + plugin.colors.get(c1), "&7- " + plugin.colors.get(c2), "&7- " + plugin.colors.get(c3)), 
 			RecipeType.ANCIENT_ALTAR,
 			(size == 27) ?
 				new ItemStack[] {
@@ -80,23 +78,18 @@ public class ColoredEnderChest extends SlimefunItem {
 		});
 		
 		new BlockMenuPreset(getID(), "&eEnder Chest", true) {
-			
-			@Override
-			public void newInstance(BlockMenu menu, Block b) {
-				// We don't need this method for our Ender Chest
-			}
 					
 			@Override
 			public void init() {
 				setSize(size);
 						
-				addMenuOpeningHandler((p) -> {
-					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.8F, 1.6F);
-				});
+				addMenuOpeningHandler(p ->
+					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.8F, 1.6F)
+				);
 						
-				addMenuCloseHandler((p) -> {
-					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, 1.8F, 1.6F);
-				});
+				addMenuCloseHandler(p ->
+					p.playSound(p.getLocation(), Sound.BLOCK_ENDER_CHEST_CLOSE, 1.8F, 1.6F)
+				);
 			}
 					
 			@Override

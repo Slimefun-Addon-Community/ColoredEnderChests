@@ -3,7 +3,6 @@ package io.github.thebusybiscuit.coloredenderchests;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,22 +12,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
-import io.github.thebusybiscuit.cscorelib2.updater.BukkitUpdater;
-import io.github.thebusybiscuit.cscorelib2.updater.GitHubBuildsUpdater;
-import io.github.thebusybiscuit.cscorelib2.updater.Updater;
-import me.mrCookieSlime.CSCoreLibPlugin.PluginUtils;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.ArmorStandFactory;
-import me.mrCookieSlime.CSCoreLibPlugin.general.World.CustomSkull;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
+import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
+import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
+import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 
 public class ColoredEnderChests extends JavaPlugin {
 	
 	protected Config cfg;
 	protected Map<Integer, String> colors = new HashMap<>();
-	protected Category category, category2;
+	protected Category category;
 	
 	protected Material[] wool = {
 		Material.WHITE_WOOL,
@@ -54,26 +51,18 @@ public class ColoredEnderChests extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		PluginUtils utils = new PluginUtils(this);
-		utils.setupConfig();
-		cfg = utils.getConfig();
+		cfg = new Config(this);
 		
 		// Setting up bStats
 		new Metrics(this);
 
 		// Setting up the Auto-Updater
-		Updater updater;
-
-		if (!getDescription().getVersion().startsWith("DEV - ")) {
-			// We are using an official build, use the BukkitDev Updater
-			updater = new BukkitUpdater(this, getFile(), 99696);
-		}
-		else {
+		if (getDescription().getVersion().startsWith("DEV - ")) {
 			// If we are using a development build, we want to switch to our custom 
-			updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
+			Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
+			
+			if (cfg.getBoolean("options.auto-update")) updater.start();
 		}
-
-		if (cfg.getBoolean("options.auto-update")) updater.start();
 		
 		Research r = new Research(2610, "Colored Ender Chests", 20);
 		Research r2 = new Research(2611, "Big Colored Ender Chests", 30);
@@ -104,12 +93,6 @@ public class ColoredEnderChests extends JavaPlugin {
 		
 		category = new Category(new CustomItem(Material.ENDER_CHEST, "&5Colored Ender Chests", "", "&a> Click to open"), 2);
 		
-		try {
-			category2 = new Category(new CustomItem(CustomSkull.getItem("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmEzYjM0ODYyYjlhZmI2M2NmOGQ1Nzc5OTY2ZDNmYmE3MGFmODJiMDRlODNmM2VhZjY0NDlhZWJhIn19fQ=="), "&5Colored Ender Backpacks", "", "&a> Click to open"), 2);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		for (int c1 = 0; c1 < 16; c1++) {
 			for (int c2 = 0; c2 < 16; c2++) {
 				for (int c3 = 0; c3 < 16; c3++) {
@@ -120,17 +103,17 @@ public class ColoredEnderChests extends JavaPlugin {
 		
 	}
 	
-	private void registerEnderChest(Research research_small, Research research_big, final int c1, final int c2, final int c3) {
+	private void registerEnderChest(Research smallResearch, Research bigResearch, final int c1, final int c2, final int c3) {
 		if (cfg.getBoolean("small_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 27, c1, c2, c3);
 			item.register();
-			research_small.addItems(item);
+			smallResearch.addItems(item);
 		}
 		
 		if (cfg.getBoolean("big_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 54, c1, c2, c3);
 			item.register();
-			research_big.addItems(item);
+			bigResearch.addItems(item);
 		}
 	}
 	
@@ -160,7 +143,7 @@ public class ColoredEnderChests extends JavaPlugin {
 	}
 
 	protected void removeIndicator(Block b) {
-		for (Entity n: b.getChunk().getEntities()) {
+		for (Entity n : b.getChunk().getEntities()) {
 			if (n instanceof ArmorStand && n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D) {
 				n.remove();
 			}
