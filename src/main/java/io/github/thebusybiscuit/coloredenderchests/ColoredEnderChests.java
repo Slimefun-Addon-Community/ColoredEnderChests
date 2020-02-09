@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -54,7 +55,7 @@ public class ColoredEnderChests extends JavaPlugin {
 		cfg = new Config(this);
 		
 		// Setting up bStats
-		new Metrics(this);
+		new Metrics(this, 4907);
 
 		// Setting up the Auto-Updater
 		if (getDescription().getVersion().startsWith("DEV - ")) {
@@ -64,15 +65,11 @@ public class ColoredEnderChests extends JavaPlugin {
 			if (cfg.getBoolean("options.auto-update")) updater.start();
 		}
 		
-		Research r = new Research(2610, "Colored Ender Chests", 20);
-		Research r2 = new Research(2611, "Big Colored Ender Chests", 30);
-		Research r3 = new Research(2612, "Colored Ender Backpacks", 20);
-		Research r4 = new Research(2613, "Big Colored Ender Backpacks", 30);
+		Research enderChestsResearch = new Research(new NamespacedKey(this, "colored_enderchests"), 2610, "Colored Ender Chests", 20);
+		Research bigEnderChestsResearch = new Research(new NamespacedKey(this, "big_colored_enderchests"), 2611, "Big Colored Ender Chests", 30);
 		
-		r.register();
-		r2.register();
-		r3.register();
-		r4.register();
+		enderChestsResearch.register();
+		bigEnderChestsResearch.register();
 		
 		colors.put(0, "&rWhite");
 		colors.put(1, "&6Orange");
@@ -91,12 +88,12 @@ public class ColoredEnderChests extends JavaPlugin {
 		colors.put(14, "&4Red");
 		colors.put(15, "&8Black");
 		
-		category = new Category(new CustomItem(Material.ENDER_CHEST, "&5Colored Ender Chests", "", "&a> Click to open"), 2);
+		category = new Category(new NamespacedKey(this, "colored_enderchests"), new CustomItem(Material.ENDER_CHEST, "&5Colored Ender Chests"), 2);
 		
 		for (int c1 = 0; c1 < 16; c1++) {
 			for (int c2 = 0; c2 < 16; c2++) {
 				for (int c3 = 0; c3 < 16; c3++) {
-					registerEnderChest(r, r2, c1, c2, c3);
+					registerEnderChest(enderChestsResearch, bigEnderChestsResearch, c1, c2, c3);
 				}
 			}
 		}
