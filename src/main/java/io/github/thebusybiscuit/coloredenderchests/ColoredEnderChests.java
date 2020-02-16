@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import me.mrCookieSlime.CSCoreLibPlugin.general.World.ArmorStandFactory;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.Research;
@@ -22,7 +23,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
 
-public class ColoredEnderChests extends JavaPlugin {
+public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
 	
 	protected Config cfg;
 	protected Map<Integer, String> colors = new HashMap<>();
@@ -103,13 +104,13 @@ public class ColoredEnderChests extends JavaPlugin {
 	private void registerEnderChest(Research smallResearch, Research bigResearch, final int c1, final int c2, final int c3) {
 		if (cfg.getBoolean("small_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 27, c1, c2, c3);
-			item.register();
+			item.register(this);
 			smallResearch.addItems(item);
 		}
 		
 		if (cfg.getBoolean("big_chests")) {
 			ColoredEnderChest item = new ColoredEnderChest(this, 54, c1, c2, c3);
-			item.register();
+			item.register(this);
 			bigResearch.addItems(item);
 		}
 	}
@@ -145,5 +146,15 @@ public class ColoredEnderChests extends JavaPlugin {
 				n.remove();
 			}
 		}
+	}
+
+	@Override
+	public JavaPlugin getJavaPlugin() {
+		return this;
+	}
+
+	@Override
+	public String getBugTrackerURL() {
+		return "https://github.com/TheBusyBiscuit/ColoredEnderChests/issues";
 	}
 }
