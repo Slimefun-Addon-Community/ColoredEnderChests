@@ -18,6 +18,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 
 public class ColoredEnderChest extends SlimefunItem {
 
@@ -27,13 +28,13 @@ public class ColoredEnderChest extends SlimefunItem {
 			RecipeType.ANCIENT_ALTAR,
 			(size == 27) ?
 				new ItemStack[] {
-					new ItemStack(plugin.wool[c1]), new ItemStack(plugin.wool[c2]), new ItemStack(plugin.wool[c3]), 
+					new ItemStack(MaterialCollections.getAllWoolColors().get(c1)), new ItemStack(MaterialCollections.getAllWoolColors().get(c2)), new ItemStack(MaterialCollections.getAllWoolColors().get(c3)), 
 					new ItemStack(Material.OBSIDIAN), new ItemStack(Material.CHEST), new ItemStack(Material.OBSIDIAN), 
 					SlimefunItems.RUNE_ENDER, new ItemStack(Material.OBSIDIAN), SlimefunItems.RUNE_ENDER
 				}
 			:
 				new ItemStack[] {
-					new ItemStack(plugin.wool[c1]), new ItemStack(plugin.wool[c2]), new ItemStack(plugin.wool[c3]), 
+					new ItemStack(MaterialCollections.getAllWoolColors().get(c1)), new ItemStack(MaterialCollections.getAllWoolColors().get(c2)), new ItemStack(MaterialCollections.getAllWoolColors().get(c3)), 
 					SlimefunItems.WITHER_PROOF_OBSIDIAN, SlimefunItem.getItem("COLORED_ENDER_CHEST_SMALL_" + c1 + "_" + c2 + "_" + c3), SlimefunItems.WITHER_PROOF_OBSIDIAN, 
 					SlimefunItems.RUNE_ENDER, SlimefunItems.GOLD_24K, SlimefunItems.RUNE_ENDER
 				}
@@ -67,12 +68,12 @@ public class ColoredEnderChest extends SlimefunItem {
 				}
 				
 				BlockStorage.addBlockInfo(b, "yaw", String.valueOf(yaw));
-				plugin.updateIndicator(b, c1, c2, c3, yaw + 45);
+				ColorIndicator.updateIndicator(b, c1, c2, c3, yaw + 45);
 			}
 			
 			@Override
 			public boolean onBreak(Player p, Block b, SlimefunItem item, UnregisterReason reason) {
-				plugin.removeIndicator(b);
+			    ColorIndicator.removeIndicator(b);
 				return true;
 			}
 		});
@@ -99,7 +100,7 @@ public class ColoredEnderChest extends SlimefunItem {
 					
 			@Override
 			public boolean canOpen(Block b, Player p) {
-				plugin.updateIndicator(b, c1, c2, c3, Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "yaw")) + 45);
+			    ColorIndicator.updateIndicator(b, c1, c2, c3, Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "yaw")) + 45);
 				return true;
 			}
 		};
