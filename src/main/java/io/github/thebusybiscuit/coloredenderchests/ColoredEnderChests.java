@@ -33,7 +33,6 @@ public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
         if (getDescription().getVersion().startsWith("DEV - ")) {
             // If we are using a development build, we want to switch to our custom
             Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
-
             if (cfg.getBoolean("options.auto-update")) updater.start();
         }
 

@@ -5,15 +5,12 @@ import java.util.stream.IntStream;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.EnderChest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.UnregisterReason;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -35,48 +32,14 @@ public class ColoredEnderChest extends SlimefunItem {
 			:
 				new ItemStack[] {
 					new ItemStack(MaterialCollections.getAllWoolColors().get(c1)), new ItemStack(MaterialCollections.getAllWoolColors().get(c2)), new ItemStack(MaterialCollections.getAllWoolColors().get(c3)), 
-					SlimefunItems.WITHER_PROOF_OBSIDIAN, SlimefunItem.getItem("COLORED_ENDER_CHEST_SMALL_" + c1 + "_" + c2 + "_" + c3), SlimefunItems.WITHER_PROOF_OBSIDIAN, 
+					SlimefunItems.WITHER_PROOF_OBSIDIAN, getSmallerEnderChest(c1, c2, c3), SlimefunItems.WITHER_PROOF_OBSIDIAN, 
 					SlimefunItems.RUNE_ENDER, SlimefunItems.GOLD_24K, SlimefunItems.RUNE_ENDER
 				}
 		);
 		
 		int[] slots = IntStream.range(0, size).toArray();
 		
-		SlimefunItem.registerBlockHandler(getID(), new SlimefunBlockHandler() {
-			
-			@Override
-			public void onPlace(Player p, Block b, SlimefunItem item) {
-				int yaw = 0;
-				
-				EnderChest chest = (EnderChest) b.getBlockData();
-				
-				switch (chest.getFacing()) {
-					case NORTH:
-						yaw = 180;
-						break;
-					case SOUTH:
-						yaw = 0;
-						break;
-					case WEST:
-						yaw = 90;
-						break;
-					case EAST:
-						yaw = -90;
-						break;
-					default:
-						break;
-				}
-				
-				BlockStorage.addBlockInfo(b, "yaw", String.valueOf(yaw));
-				ColorIndicator.updateIndicator(b, c1, c2, c3, yaw + 45);
-			}
-			
-			@Override
-			public boolean onBreak(Player p, Block b, SlimefunItem item, UnregisterReason reason) {
-			    ColorIndicator.removeIndicator(b);
-				return true;
-			}
-		});
+		SlimefunItem.registerBlockHandler(getID(), new EnderChestBlockHandler(c1, c2, c3));
 		
 		new BlockMenuPreset(getID(), "&eEnder Chest", true) {
 					
@@ -103,7 +66,12 @@ public class ColoredEnderChest extends SlimefunItem {
 			    ColorIndicator.updateIndicator(b, c1, c2, c3, Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "yaw")) + 45);
 				return true;
 			}
-		};
-	}
+        };
+    }
+
+    private static ItemStack getSmallerEnderChest(int c1, int c2, int c3) {
+        SlimefunItem enderChest = SlimefunItem.getByID("COLORED_ENDER_CHEST_SMALL_" + c1 + "_" + c2 + "_" + c3);
+        return enderChest != null ? enderChest.getItem() : null;
+    }
 
 }
