@@ -8,8 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Lists.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -27,13 +27,13 @@ public class ColoredEnderChest extends SlimefunItem {
 				new ItemStack[] {
 					new ItemStack(MaterialCollections.getAllWoolColors().get(c1)), new ItemStack(MaterialCollections.getAllWoolColors().get(c2)), new ItemStack(MaterialCollections.getAllWoolColors().get(c3)), 
 					new ItemStack(Material.OBSIDIAN), new ItemStack(Material.CHEST), new ItemStack(Material.OBSIDIAN), 
-					SlimefunItems.RUNE_ENDER, new ItemStack(Material.OBSIDIAN), SlimefunItems.RUNE_ENDER
+					SlimefunItems.ENDER_RUNE, new ItemStack(Material.OBSIDIAN), SlimefunItems.ENDER_RUNE
 				}
 			:
 				new ItemStack[] {
 					new ItemStack(MaterialCollections.getAllWoolColors().get(c1)), new ItemStack(MaterialCollections.getAllWoolColors().get(c2)), new ItemStack(MaterialCollections.getAllWoolColors().get(c3)), 
 					SlimefunItems.WITHER_PROOF_OBSIDIAN, getSmallerEnderChest(c1, c2, c3), SlimefunItems.WITHER_PROOF_OBSIDIAN, 
-					SlimefunItems.RUNE_ENDER, SlimefunItems.GOLD_24K, SlimefunItems.RUNE_ENDER
+					SlimefunItems.ENDER_RUNE, SlimefunItems.GOLD_24K, SlimefunItems.ENDER_RUNE
 				}
 		);
 		
