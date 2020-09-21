@@ -30,7 +30,7 @@ final class ColorIndicator {
 
     static void removeIndicator(Block b) {
         for (Entity n : b.getChunk().getEntities()) {
-            if (n instanceof ArmorStand && n.getCustomName() == null && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D) {
+            if (n instanceof ArmorStand && b.getLocation().add(0.5D, 0.5D, 0.5D).distanceSquared(n.getLocation()) < 0.75D && n.getCustomName() == null) {
                 n.remove();
             }
         }

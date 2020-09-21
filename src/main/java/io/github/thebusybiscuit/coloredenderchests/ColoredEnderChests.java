@@ -3,6 +3,7 @@ package io.github.thebusybiscuit.coloredenderchests;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
@@ -33,7 +33,10 @@ public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
         if (getDescription().getVersion().startsWith("DEV - ")) {
             // If we are using a development build, we want to switch to our custom
             Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
-            if (cfg.getBoolean("options.auto-update")) updater.start();
+
+            if (cfg.getBoolean("options.auto-update")) {
+                updater.start();
+            }
         }
 
         Research enderChestsResearch = new Research(new NamespacedKey(this, "colored_enderchests"), 2610, "Colored Ender Chests", 20);
