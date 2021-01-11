@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
-import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
+import io.github.thebusybiscuit.slimefun4.utils.ColoredMaterial;
 
 final class ColorIndicator {
 
@@ -54,20 +54,17 @@ final class ColorIndicator {
     }
 
     private static Material getWool(int index) {
-        return MaterialCollections.getAllWoolColors().get(index);
+        return ColoredMaterial.WOOL.get(index);
     }
 
     private static Location translocate(Location l, int direction, int yaw) {
         if (yaw == 45) { // 0
             return l.add(0.275 * direction, 0, 0);
-        }
-        else if (yaw == 225) { // 180
+        } else if (yaw == 225) { // 180
             return l.add(-0.275 * direction, 0, 0);
-        }
-        else if (yaw == -45) { // -90
+        } else if (yaw == -45) { // -90
             return l.add(0, 0, -0.275 * direction);
-        }
-        else { // 90
+        } else { // 90
             return l.add(0, 0, 0.275 * direction);
         }
     }
