@@ -8,19 +8,18 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.core.researching.Research;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
-import me.mrCookieSlime.Slimefun.cscorelib2.updater.Updater;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
 
 public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
 
     protected Config cfg;
     protected Map<Integer, String> colors = new HashMap<>();
-    protected Category category;
+    protected ItemGroup itemGroup;
 
     @Override
     public void onEnable() {
@@ -30,13 +29,8 @@ public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
         new Metrics(this, 4907);
 
         // Setting up the Auto-Updater
-        if (getDescription().getVersion().startsWith("DEV - ")) {
-            // If we are using a development build, we want to switch to our custom
-            Updater updater = new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master");
-
-            if (cfg.getBoolean("options.auto-update")) {
-                updater.start();
-            }
+        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
+            new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ColoredEnderChests/master").start();
         }
 
         Research enderChestsResearch = new Research(new NamespacedKey(this, "colored_enderchests"), 2610, "Colored Ender Chests", 20);
@@ -62,7 +56,7 @@ public class ColoredEnderChests extends JavaPlugin implements SlimefunAddon {
         colors.put(14, "&4Red");
         colors.put(15, "&8Black");
 
-        category = new Category(new NamespacedKey(this, "colored_enderchests"), new CustomItem(Material.ENDER_CHEST, "&5Colored Ender Chests"), 2);
+        itemGroup = new ItemGroup(new NamespacedKey(this, "colored_enderchests"), new CustomItemStack(Material.ENDER_CHEST, "&5Colored Ender Chests"), 2);
 
         for (int c1 = 0; c1 < 16; c1++) {
             for (int c2 = 0; c2 < 16; c2++) {
