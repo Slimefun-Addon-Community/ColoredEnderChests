@@ -10,15 +10,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.utils.ColoredMaterial;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 
@@ -26,8 +26,8 @@ public class ColoredEnderChest extends SlimefunItem {
 
     public ColoredEnderChest(ColoredEnderChests plugin, int size, int c1, int c2, int c3) {
         // @formatter:off
-        super(plugin.category, new SlimefunItemStack("COLORED_ENDER_CHEST_" + (size == 27 ? "SMALL" : "BIG") + "_" + c1 + "_" + c2 + "_" + c3, Material.ENDER_CHEST, "&eColored Ender Chest &7(" + (size == 27 ? "Small" : "Big") + ")", "", "&7Size: &e" + size, "", "&7- " + plugin.colors.get(c1), "&7- " + plugin.colors.get(c2), "&7- "
-                + plugin.colors.get(c3)), RecipeType.ANCIENT_ALTAR, 
+        super(plugin.itemGroup, new SlimefunItemStack("COLORED_ENDER_CHEST_" + (size == 27 ? "SMALL" : "BIG") + "_" + c1 + "_" + c2 + "_" + c3, Material.ENDER_CHEST, "&eColored Ender Chest &7(" + (size == 27 ? "Small" : "Big") + ")", "", "&7Size: &e" + size, "", "&7- " + plugin.colors.get(c1), "&7- " + plugin.colors.get(c2), "&7- "
+                + plugin.colors.get(c3)), RecipeType.ANCIENT_ALTAR,
                 (size == 27) ? new ItemStack[] { 
                         new ItemStack(ColoredMaterial.WOOL.get(c1)), new ItemStack(ColoredMaterial.WOOL.get(c2)), new ItemStack(ColoredMaterial.WOOL.get(c3)), 
                         new ItemStack(Material.OBSIDIAN), new ItemStack(Material.CHEST), new ItemStack(Material.OBSIDIAN), 
@@ -139,7 +139,7 @@ public class ColoredEnderChest extends SlimefunItem {
     }
 
     private static ItemStack getSmallerEnderChest(int c1, int c2, int c3) {
-        SlimefunItem enderChest = SlimefunItem.getByID("COLORED_ENDER_CHEST_SMALL_" + c1 + "_" + c2 + "_" + c3);
+        SlimefunItem enderChest = SlimefunItem.getById("COLORED_ENDER_CHEST_SMALL_" + c1 + "_" + c2 + "_" + c3);
         return enderChest != null ? enderChest.getItem() : null;
     }
 
